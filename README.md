@@ -9,8 +9,7 @@ Diferencia entre Generación 1 y Generación 2 de máquinas virtuales Hyper-V:
 * Gen 1 estaba en versiones de Windows Server 2008 R2
 * Gen 2 sale a partir de Windows Server 2012
 * Difieren en el firmware que manejan (Gen1 BIOS, no Hot Swap/ Gen2 UEFI, con Hot Swap) por lo tanto la Gen2 posee más opciones de configuración
-
-![gen1gen2](images/gen1gen2.png)
+* ![gen1gen2](images/gen1gen2.png)
 * Se conservan ambas generaciones por compatibilidad
 
 #### Versión de configuración
@@ -39,7 +38,6 @@ Discos virtuales
 * Se puede convertir de .vhd a .vhdx
 * Se dividen en 3 categorías:
 	* Dinámicos: Se le asigna el total en GB pero sólo utiliza la cantidad (espacio) de datos que tiene almacenado
-	
 		![discodinamico](images/disco-dinamico.png)
 	
 	* Fijos: Se le asigna el total en GB y el tamaño del archivo que se crea es de esa cantidad
@@ -58,8 +56,7 @@ Sistema Operativo
 #### Creación de máquinas virtuales
 
 * Luego de habilitar la característica de Hyper-V en Windows abrir Hyper-V manager:
-
-![hyper-v](images/hyper-v-manager.png)
+* ![hyper-v](images/hyper-v-manager.png)
 * Click derecho sobre host (mi PC arriba a la izquierda) -> Nuevo -> Máquina virtual
 * Poner nombre a nuestra máquina virtual
 * Clickear checkbox para almacenar la máquina virtual en otra ubicación (se recomienda no dejarlo en el disco local C:\\ )
