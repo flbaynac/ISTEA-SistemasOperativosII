@@ -8,7 +8,7 @@ Diferencia entre Generación 1 y Generación 2 de máquinas virtuales Hyper-V:
 
 * Gen 1 estaba en versiones de Windows Server 2008 R2
 * Gen 2 sale a partir de Windows Server 2012
-* Difieren en el firmware que manejan (Gen1 BIOS, no Hot Swap/ Gen2 UEFI, con Hot Swap) por lo tanto la Gen2 posee más opciones de configuración
+* Difieren en el firmware que manejan (Gen1 BIOS, no Hot Swap, usa controladora de discord IDE/ Gen2 UEFI, con Hot Swap, usa controladora de discord SCSI) por lo tanto la Gen2 posee más opciones de configuración
 * ![gen1gen2](images/gen1gen2.png)
 * Se conservan ambas generaciones por compatibilidad
 
@@ -61,6 +61,7 @@ Sistema Operativo
 * Sólo se recomienda en entornos de #desarrollo ya que baja el rendimiento al tener que recorrer el .vhdx original y el .avhdx con las diferencias
 * Se puede eliminar el snapshot una vez que se verificó que funciona todo correctamente (necesario en entornos de #producción ) para dejar un único archivo .vhdx y mejorar el rendimiento (puede tardar si posee muchos snapshots o si es muy grande)
 * Los Snapshot __NO SON UN BACKUP__
+* A partir de la versión de configuración 9 vienen activados los snapshots automáticos
 
 #### SID
 
@@ -87,3 +88,19 @@ Disco template/plantilla de [Sistema Operativo](#Sistema)
 * Se le asigna un [disco](#Discos) duro virtual
 * Finalizar (Posteriormente se le debe agregar un [sistema](#Sistema) operativo para que arranque)
 
+#### Sesión mejorada
+
+* Se activa haciendo click derecho sobre el host (arriba a la izquierda) -> Configuración de Hyper-V -> Activar el checkbox de sesión mejorada
+* Permite funciones como ajuste dinámico de la resolución, portapapeles compartido, entre otras funcionalidades
+
+#### Inicio automático
+
+* Determina si la máquina virtual se inicia automáticamente cuando se encienda el Host
+* Se puede retrasar el inicio (útil en ambientes de #producción por ejemplo para controladores de dominio)
+
+#### Detención automática
+
+* Determina el comportamiento de la máquina virtual cuando se apaga el Host
+* Por defecto guarda el estado en el que está (con sus programas abiertos)
+* Pensado para ambientes de #desarrollo 
+* En #producción se utiliza la opción de Apagar el sistema operativo invitado
