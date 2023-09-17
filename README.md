@@ -41,7 +41,7 @@ Discos virtuales
 		![discodinamico](images/disco-dinamico.png)
 	
 	* Fijos: Se le asigna el total en GB y el tamaño del archivo que se crea es de esa cantidad
-	* Diferenciados: #faltacompletar
+	* Diferenciados/secundario (sólo para ambientes de #desarrollo ya que si se cae o rompe el disco primario, también se rompe el secundario): Posee un disco duro primario ([template](#Template)/plantilla) referenciado y usa su propio .vhdx para alojar las diferencias (por ejemplo el primario posee el sistema operativo y el secundario un aplicativo como SQL) 
 * Se agregan al crear la máquina virtual o desde configuración en el apartado de Controladora SCSI
 
 #### Sistema
@@ -52,6 +52,27 @@ Sistema Operativo
 * Vienen en dos ediciones (la cual se elije en la instalación y no se puede cambiar):
 	* Sin interfaz gráfica (Línea de comandos)
 	* Experiencia de escritorio (Con interfaz gráfica)
+
+#### Snapshot
+
+* Es una imagen del sistema operativo en un momento dado
+* Se puede, una vez instalado el sistema operativo, crear una snapshot a fin de evitar un posible error al instalar una aplicación
+* Crea un archivo .avhdx que aloja las diferencias
+* Sólo se recomienda en entornos de #desarrollo ya que baja el rendimiento al tener que recorrer el .vhdx original y el .avhdx con las diferencias
+* Se puede eliminar el snapshot una vez que se verificó que funciona todo correctamente (necesario en entornos de #producción ) para dejar un único archivo .vhdx y mejorar el rendimiento (puede tardar si posee muchos snapshots o si es muy grande)
+* Los Snapshot __NO SON UN BACKUP__
+
+#### SID
+
+* Es un código identificador único de seguridad (Como la dirección MAC en dispositivos de Hardware) que se asigna cuando se instala el sistema operativo
+* El ejecutable C:\\windows\\system32\\sysprep\\sysprep.exe borra archivos de configuración para poder exportar la máquina y usarla como [template](#Template)
+*  ![sysprep](images/sysprep.png)
+
+#### Template
+
+Disco template/plantilla de [Sistema Operativo](#Sistema)
+* Debe poseer un nombre descriptivo (por ejemplo: TemplateWS2021CoreEs_Dynamic.vhdx)
+* Debe tener un SID diferente (debe ejecutarse sysprep.exe en el equipo a exportar -> clickear en generalize -> y seleccionar la opción de shutdown -> copiar el .vhdx)
 
 #### Creación de máquinas virtuales
 
