@@ -45,6 +45,7 @@ Se le denomina a:
 
 * Eficaz para mover VMs a otra organización fuera del dominio (por ejemplo guardándola en un disco duro externo)
 * Puede utilizarse dentro de un mismo Hyper-V para generar un ambiente de #desarrollo con las mismas librerías/dependencias
+* Al __importar__ desde el mismo hipervisor, no se puede registrar o restaurar la VM ya que posee el mismo número de ID. Se debe copiar la VM a fin de crear un nuevo número de ID
 
 #### Live Migration
 
