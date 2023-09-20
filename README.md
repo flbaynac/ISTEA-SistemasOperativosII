@@ -160,3 +160,40 @@ Disco template/plantilla de [Sistema Operativo](#Sistema\Operativo)
 * Por defecto guarda el estado en el que está (con sus programas abiertos)
 * Pensado para ambientes de #desarrollo 
 * En #producción se utiliza la opción de Apagar el sistema operativo invitado
+
+#### Herramienta Veeam backup and restore
+
+* 
+
+#### Active directory
+
+##### Bosque : 
+Conjunto de todos los dominios (root y child domains)
+
+![domain](images/domaintree.png)
+
+##### Child Domain:
+
+* Agregar un nuevo dominio a un bosque existente
+* Hereda el sufijo del padre por ejemplo adm.nombrempresa.local
+* Tambien necesita contra dominios
+* __Tiene sus propios objetos__
+* Si no es por algo politico organizacional o comercial no se crean child domain
+* Se utiliza por ejemplo para que administrar distintas filiales con distintos administradores
+
+##### Domain :
+
+* Le suelen dar el mismo nombre que la organización
+* Debe contener por lo menos dos etiquetas (```.com.ar``` ```.local``` ```.internal```)
+* Antes Microsoft recomendaba dominios ```.local .internal```, ahora recomienda enroutables ```.com .com.ar```
+* Permite establecer políticas de grupo (controla los USB, no se puede abrir el panel de control, establecer un fondo de escritorio para todos)
+* Posee una consola centralizada (por ejemplo para crear usuarios que puedan iniciar sesión en cualquier equipo del dominio)
+* Server Manager -> Usuarios y equipos de Active Directory -> Consola centralizada
+* Instalar el rol de Active Directory Domain Services (ADDS) y configurarlo (promoverlo a controlador de dominio)
+* En versiones anteriores a la __Windows Server 2008R2__ tenías que ejecutar el comando ```dcpromo``` , a partir de la version 2012 ese comando se __descontinuo__ y ahora se hace desde __Server Manager__ posterior a instalar el Rol
+* El asistente pide que creemos un Bosque con un dominio __principal o root__ (```nombreempresa.local```)
+* Es necesario que se mantenga vivo con máquinas llamadas contra dominios (Microsoft recomienda mínimo 2 por dominio, en este caso a como de ejemplo serían ```dc01.nombreempresa.local``` y ```dc02.nombreempresa.local```)
+
+##### Unidad Organizativa :
+
+* Carpetas customizadas para organizar objetos individuales para cada caso (por ejemplo buenos aires para representar una filial de la empresa)
