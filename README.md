@@ -1,6 +1,6 @@
 # Resumen de Sistemas Operativos II
 
-### Conceptos básicos
+### Conceptos básicos Hyper-V
 
 #### Generación
 
@@ -161,27 +161,45 @@ Disco template/plantilla de [Sistema Operativo](#Sistema\Operativo)
 * Pensado para ambientes de #desarrollo 
 * En #producción se utiliza la opción de Apagar el sistema operativo invitado
 
+#### Actualizar Windows Server
+
+* Hacer un backup del disco original
+* Descargar la ISO, una versión más nueva de la actual, se debe instalar una versión más nueva a la vez
+* Montar la ISO como DVD en la VM
+* Marcar la opción upgrade
+
 #### Herramienta Veeam backup and restore
 
-* 
+* Veeam Software es una empresa privada del sector de la tecnología de la información que desarrolla software de gestión de backup, recuperación ante desastres y gestión inteligente de datos para infraestructuras virtuales, físicas y multi-cloud
 
-#### Active directory
+### Active directory
 
-##### Bosque : 
+[Active Directory](https://learn.microsoft.com/es-es/windows/win32/ad/active-directory-domain-services) (AD) o Directorio Activo (DA) son los términos que utiliza Microsoft para referirse a su implementación de servicio de directorio en una red distribuida de computadoras. Utiliza distintos protocolos, principalmente LDAP, DNS,​ DHCP y Kerberos.
+
+De forma sencilla se puede decir que es un servicio establecido en uno o varios servidores en donde se crean objetos tales como usuarios, equipos o grupos, con el objetivo de administrar los inicios de sesión en los equipos conectados a la red, así como también la administración de políticas en toda la red.
+
+#### Nivel funcional
+
+* Según el sistema operativo que posea el controlador de dominio
+* Siempre elegir el más reciente
+* Aunque tengas una versión más nueva, a veces dice una versión anterior, eso es porque Microsoft no sacó ninguna actualización de AD en las nuevas versiones
+
+#### Bosque
+
 Conjunto de todos los dominios (root y child domains)
 
 ![domain](images/domaintree.png)
 
-##### Child Domain:
+#### Child Domain
 
 * Agregar un nuevo dominio a un bosque existente
-* Hereda el sufijo del padre por ejemplo adm.nombrempresa.local
-* Tambien necesita contra dominios
+* Hereda el sufijo del padre por ejemplo ```adm.nombrempresa.local```
+* También necesita contra dominios
 * __Tiene sus propios objetos__
-* Si no es por algo politico organizacional o comercial no se crean child domain
+* Si no es por algo político organizacional o comercial no se crean child domain
 * Se utiliza por ejemplo para que administrar distintas filiales con distintos administradores
 
-##### Domain :
+#### Domain
 
 * Le suelen dar el mismo nombre que la organización
 * Debe contener por lo menos dos etiquetas (```.com.ar``` ```.local``` ```.internal```)
@@ -190,10 +208,50 @@ Conjunto de todos los dominios (root y child domains)
 * Posee una consola centralizada (por ejemplo para crear usuarios que puedan iniciar sesión en cualquier equipo del dominio)
 * Server Manager -> Usuarios y equipos de Active Directory -> Consola centralizada
 * Instalar el rol de Active Directory Domain Services (ADDS) y configurarlo (promoverlo a controlador de dominio)
-* En versiones anteriores a la __Windows Server 2008R2__ tenías que ejecutar el comando ```dcpromo``` , a partir de la version 2012 ese comando se __descontinuo__ y ahora se hace desde __Server Manager__ posterior a instalar el Rol
+* En versiones anteriores a la __Windows Server 2008R2__ tenías que ejecutar el comando ```dcpromo``` , a partir de la versión 2012 ese comando se __descontinuo__ y ahora se hace desde __Server Manager__ posterior a instalar el Rol
 * El asistente pide que creemos un Bosque con un dominio __principal o root__ (```nombreempresa.local```)
 * Es necesario que se mantenga vivo con máquinas llamadas contra dominios (Microsoft recomienda mínimo 2 por dominio, en este caso a como de ejemplo serían ```dc01.nombreempresa.local``` y ```dc02.nombreempresa.local```)
 
-##### Unidad Organizativa :
+#### Unidad Organizativa
 
-* Carpetas customizadas para organizar objetos individuales para cada caso (por ejemplo buenos aires para representar una filial de la empresa)
+* Carpetas customizadas para organizar objetos individuales para cada caso (por ejemplo para darle acceso a un equipo de Helpdesk de agregar usuarios locales a las máquinas en el dominio)
+
+#### Contenedor
+
+* Al igual que las unidades organizativas son carpetas para organizar objetos pero que vienen por defecto
+* __Domain Admin__:
+	* Cuando los equipos y servidores se unen al dominio, se le agrega al grupo de administradores locales el grupo __domain admin__
+	*  Un __domain admin__ no puede ver los objetos de `brasil.tuempresa.com` si está en `peru.tuempresa.com` pero si puede administrar los equipos en su dominio
+	* En los __child domains__ no existe el grupo __enterprise admin__
+* __Enterprise Admin__:
+	* Tiene privilegios sobre todos los contra dominios del bosque
+	* No se agrega como administrador local en los equipos del dominio
+	* Está pensado para administrar contra dominios dentro del bosque
+	* Vive en el __root domain__ y puede ver objetos de contra dominios de los __child domain__
+
+#### RSAT
+
+Herramientas de administración remota del servidor
+* En una PC unida al dominio con los permisos correspondientes en ActiveDirectory -> Configuración -> Aplicaciones -> Características Opcionales -> RSAT (sirve para hacer acciones administrativas en nuestro servidor sin conectarse por RDP)
+
+#### Global Catalog
+
+* El catálogo global contiene una réplica parcial de cada contexto de nomenclatura del directorio
+* Es recomendable que todos los contra dominios tengan la función del global catalog
+
+#### Contra dominio de sólo lectura
+
+* Disponible a partir de la versión Windows Server 2008R2
+* El primer contra dominio debe ser de escritura y lectura (DC01)
+* A partir de Windows Server 2008R2 se replican a través de DFS Replication y que se pone en runnning una vez que se promueve a contra dominio (a partir del 2016 no soporta más FRS)
+* No cachea ni almacena credenciales (enfocado en el robo de credenciales por si no posee un firewall o un sistema corporativo de seguridad)
+* Por ejemplo se pueden crear usuarios nuevos y crearles una contraseña pero éste contacta al servidor de lectura-escritura, lo crea ahí y después lo replica
+* Depende de una conexión activa ya que no almacena credenciales a menos que se ajuste para que lo haga
+
+#### Contra dominio DNS server
+
+* Se integra en la base de datos de AD (se replica en el resto de los contra dominios)
+* Aloja los registros DNS de la organización
+* Si la ruta no está cacheada en el archivo host local, le consulta al DNS la IP
+* En las propiedades de las placas de red de una máquina que quieras unir al dominio, hay que poner la IP de los contra dominios DNS
+* De manera predeterminada cuando no hay una IP en la zona que tiene cargada, pasa la petición a internet, a los __root hints__ (por ejemplo cuando quiere resolver `mercadolibre.com.ar`)
