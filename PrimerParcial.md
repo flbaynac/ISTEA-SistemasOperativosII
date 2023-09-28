@@ -2,7 +2,7 @@
 
 ## Preguntas Active Directory Domain Services:
 
-1. ![ADDS01](./images/PregExam/ADDS/ADDS01.jpg)
+1. ![ADDS01](./images/PregExam/ADDS/ADDS01.JPG)
 2. ![ADDS02](./images/PregExam/ADDS/ADDS02.jpg)
 3. ![ADDS03](./images/PregExam/ADDS/ADDS03.jpg)
 4. ![ADDS04](./images/PregExam/ADDS/ADDS04.jpg)
