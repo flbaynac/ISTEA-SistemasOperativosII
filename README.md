@@ -1,5 +1,6 @@
 # Resumen de Sistemas Operativos II
 
+[Primer Parcial](PrimerParcial.md)
 ### Conceptos básicos Hyper-V
 
 #### Generación
