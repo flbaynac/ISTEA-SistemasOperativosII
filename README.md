@@ -1,6 +1,6 @@
 # Resumen de Sistemas Operativos II
 
-[Primer Parcial](PrimerParcial.md)
+[Primer Parcial](./PrimerParcial.md)
 ### Conceptos básicos Hyper-V
 
 #### Generación
@@ -10,7 +10,7 @@ Diferencia entre Generación 1 y Generación 2 de máquinas virtuales Hyper-V:
 * Gen 1 estaba en versiones de Windows Server 2008 R2
 * Gen 2 sale a partir de Windows Server 2012
 * Difieren en el firmware que manejan (Gen1 BIOS, no Hot Swap, usa controladora de discord IDE/ Gen2 UEFI, con Hot Swap, usa controladora de discord SCSI) por lo tanto la Gen2 posee más opciones de configuración
-* ![gen1gen2](images/gen1gen2.png)
+* ![gen1gen2](./images/gen1gen2.png)
 * Se conservan ambas generaciones por compatibilidad
 
 #### Sesión mejorada
@@ -82,7 +82,7 @@ Memoria (RAM)
 * Útil para utilizar todo el ancho de banda físico de nuestro servidor y para no perder la conexión (IP por Remote Desktop Protocol) en el caso de querer cambiar o en el caso de un eventual fallo de alguna NIC física
 * Útil en ambientes de #producción 
 * En administrador de conmutadores virtuales, se puede seleccionar que no cree una NIC virtual (en el Host) cuando se crea el virtual switch externo (se muestra sólo el teamming y no el adaptador de vEthernet por lo tanto quedaría el teamming dedicado a Hyper-V)
-* ![teamming](images/teamming.png)
+* ![teamming](./images/teamming.png)
 
 #### Conmutadores de red virtualizados
 
@@ -101,7 +101,7 @@ Memoria (RAM)
 * Se puede convertir de .vhd a .vhdx
 * Se dividen en 3 categorías:
 	* Dinámicos: Se le asigna el total en GB pero sólo utiliza la cantidad (espacio) de datos que tiene almacenado, para entornos de #desarrollo se puede convertir a fijo.
-		![discodinamico](images/disco-dinamico.png)
+		![discodinamico](./images/disco-dinamico.png)
 	
 	* Fijos: Se le asigna el total en GB y el tamaño del archivo que se crea es de esa cantidad
 	* Diferenciados/secundario (sólo para ambientes de #desarrollo ya que si se cae o rompe el disco primario, también se rompe el secundario): Posee un disco duro primario ([template](#Disco\virtual\Template\o\Plantilla)) referenciado y usa su propio .vhdx para alojar las diferencias (por ejemplo el primario posee el sistema operativo y el secundario un aplicativo como SQL) 
@@ -125,7 +125,7 @@ Disco template/plantilla de [Sistema Operativo](#Sistema\Operativo)
 
 * En sistemas operativos Microsoft Windows NT, un __Identificador de seguridad (o del inglés Security IDentifier)__ es un identificador único e inmutable de un usuario, grupo de usuarios u otro director de seguridad
 * El ejecutable C:\\windows\\system32\\sysprep\\sysprep.exe borra archivos de configuración para poder exportar la máquina y usarla como [template](#Disco\virtual\Template\o\Plantilla)
-*  ![sysprep](images/sysprep.png)
+*  ![sysprep](./images/sysprep.png)
 
 #### Snapshot
 
@@ -140,7 +140,7 @@ Disco template/plantilla de [Sistema Operativo](#Sistema\Operativo)
 #### Creación de máquinas virtuales
 
 * Luego de habilitar la característica de Hyper-V en Windows abrir Hyper-V manager:
-* ![hyper-v](images/hyper-v-manager.png)
+* ![hyper-v](./images/hyper-v-manager.png)
 * Click derecho sobre host (mi PC arriba a la izquierda) -> Nuevo -> Máquina virtual
 * Poner nombre a nuestra máquina virtual
 * Clickear checkbox para almacenar la máquina virtual en otra ubicación (se recomienda no dejarlo en el disco local C:\\ )
@@ -189,7 +189,7 @@ De forma sencilla se puede decir que es un servicio establecido en uno o varios 
 
 Conjunto de todos los dominios (root y child domains)
 
-![domain](images/domaintree.png)
+![domain](./images/domaintree.png)
 
 #### Child Domain
 
