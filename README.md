@@ -1,7 +1,7 @@
 # Resumen de Sistemas Operativos II
 
 [Primer Parcial](./PrimerParcial.md)
-### Conceptos básicos Hyper-V
+### Conceptos-básicos-Hyper-V
 
 #### Generación
 
@@ -10,19 +10,20 @@ Diferencia entre Generación 1 y Generación 2 de máquinas virtuales Hyper-V:
 * Gen 1 estaba en versiones de Windows Server 2008 R2
 * Gen 2 sale a partir de Windows Server 2012
 * Difieren en el firmware que manejan (Gen1 BIOS, no Hot Swap, usa controladora de discord IDE/ Gen2 UEFI, con Hot Swap, usa controladora de discord SCSI) por lo tanto la Gen2 posee más opciones de configuración
-* ![gen1gen2](./images/gen1gen2.png)
+	* ![gen1gen2](./images/gen1gen2.png)
 * Se conservan ambas generaciones por compatibilidad
 
-#### Sesión mejorada
+#### Sesión-mejorada
 
 * Se activa haciendo click derecho sobre el host (arriba a la izquierda) -> Configuración de Hyper-V -> Activar el checkbox de sesión mejorada
 * Permite funciones como ajuste dinámico de la resolución, portapapeles compartido, entre otras funcionalidades
+* La sesión mejorar usa el protocolo RDP, por lo tanto los usuarios que se conectan deben pertenecer al [grupo](#grupos) Remote Desktop Services
 
-#### Versión de configuración
+#### Versión-de-configuración
 
 * En base al Host, cuándo se crea la máquina virtual, las características que posee en ese momento (Por ejemplo teniendo Windows 10 actualizado al crear una máquina virtual se le asigna la versión 9.0)
 
-#### Virtualización anidada
+#### Virtualización-anidada
 
 * Se consigue instalando el rol de Hyper-V a una máquina virtual
 * Se necesita habilitar la virtualización anidada en el Host (por cada máquina virtual)
@@ -42,19 +43,19 @@ Se le denomina a:
 * Hipervisor
 * Host
 
-#### Exportar/Importar VMs
+#### Exportar/Importar-VMs
 
 * Eficaz para mover VMs a otra organización fuera del dominio (por ejemplo guardándola en un disco duro externo)
 * Puede utilizarse dentro de un mismo Hyper-V para generar un ambiente de #desarrollo con las mismas librerías/dependencias
 * Al __importar__ desde el mismo hipervisor, no se puede registrar o restaurar la VM ya que posee el mismo número de ID. Se debe copiar la VM a fin de crear un nuevo número de ID
 
-#### Live Migration
+#### Live-Migration
 
 Movimiento en caliente
 * Deben estar unidas al mismo dominio
 * Eficaz para mover de un [nodo](#Nodo) a otro conectado un por switch de alta velocidad
 
-#### Memoria Virtual
+#### Memoria-Virtual
 
 Memoria (RAM)
 * Memoria de inicio: Memoria con la que inicia la máquina virtual (lo que reserva en el Host)
@@ -73,7 +74,7 @@ Memoria (RAM)
 * Del inglés __Network Interface Controller__ 
 * También conocida como tarjeta de red, placa de red, adaptador de red, adaptador LAN, Interfaz de red física
 
-#### NIC Teamming
+#### NIC-Teamming
 
 * Utilizar dos o más NIC físicas como una sola placa virtual
 * Las placas pierden administración individual y la que se debe administrar es la placa virtual del teamming
@@ -82,9 +83,9 @@ Memoria (RAM)
 * Útil para utilizar todo el ancho de banda físico de nuestro servidor y para no perder la conexión (IP por Remote Desktop Protocol) en el caso de querer cambiar o en el caso de un eventual fallo de alguna NIC física
 * Útil en ambientes de #producción 
 * En administrador de conmutadores virtuales, se puede seleccionar que no cree una NIC virtual (en el Host) cuando se crea el virtual switch externo (se muestra sólo el teamming y no el adaptador de vEthernet por lo tanto quedaría el teamming dedicado a Hyper-V)
-* ![teamming](./images/teamming.png)
+	* ![teamming](./images/teamming.png)
 
-#### Conmutadores de red virtualizados
+#### Conmutadores-de-red-virtualizados
 
 * Existen 4 tipos:
 	* Privado: Permite que las máquinas virtuales se comuniquen entre sí pero no admite conexión entre el Host y el Invitado. Pensado para habientes de #desarrollo 
@@ -92,7 +93,7 @@ Memoria (RAM)
 	* Externo: Igual que el interno pero necesita utilizar una [placa física](#NIC) para conectarse. Al crear el adaptador virtual, el [adaptador interno](#NIC) (físico) pierde el poder de administración y el que se debe administrar es el virtual (tal cual como si fuese un [adaptador](#NIC) de Red físico).
 	* Default Switch: Conmutador por defecto
 
-#### Discos Virtuales
+#### Discos-Virtuales
 
 * Se almacena en un archivo con extensión .vhdx o .vhd
 * Diferencia entre .vhdx y .vhd:
@@ -101,19 +102,19 @@ Memoria (RAM)
 * Se puede convertir de .vhd a .vhdx
 * Se dividen en 3 categorías:
 	* Dinámicos: Se le asigna el total en GB pero sólo utiliza la cantidad (espacio) de datos que tiene almacenado, para entornos de #desarrollo se puede convertir a fijo.
-		![discodinamico](./images/disco-dinamico.png)
+			![discodinamico](./images/disco-dinamico.png)
 	
 	* Fijos: Se le asigna el total en GB y el tamaño del archivo que se crea es de esa cantidad
-	* Diferenciados/secundario (sólo para ambientes de #desarrollo ya que si se cae o rompe el disco primario, también se rompe el secundario): Posee un disco duro primario ([template](#Disco\virtual\Template\o\Plantilla)) referenciado y usa su propio .vhdx para alojar las diferencias (por ejemplo el primario posee el sistema operativo y el secundario un aplicativo como SQL) 
+	* Diferenciados/secundario (sólo para ambientes de #desarrollo ya que si se cae o rompe el disco primario, también se rompe el secundario): Posee un disco duro primario ([template](#Disco-virtual-Template-o-Plantilla)) referenciado y usa su propio .vhdx para alojar las diferencias (por ejemplo el primario posee el sistema operativo y el secundario un aplicativo como SQL) 
 * Se agregan al crear la máquina virtual o desde configuración en el apartado de Controladora SCSI
 
-#### Disco virtual Template o Plantilla
+#### Disco-virtual-Template-o-Plantilla
 
-Disco template/plantilla de [Sistema Operativo](#Sistema\Operativo)
+Disco template/plantilla de [Sistema Operativo](#Sistema-Operativo)
 * Debe poseer un nombre descriptivo (por ejemplo: TemplateWS2021CoreEs_Dynamic.vhdx)
 * Debe tener un SID diferente (debe ejecutarse sysprep.exe en el equipo a exportar -> clickear en generalize -> y seleccionar la opción de shutdown -> copiar el .vhdx)
 
-#### Sistema Operativo
+#### Sistema-Operativo
 
 * Se descarga desde [Microsoft](https://www.microsoft.com/es-ES/evalcenter/evaluate-windows-server-2022) en formato .ISO
 * Se agregan al crear la máquina virtual o desde configuración en el apartado de Controladora SCSI, en unidades de DVD, imagen .ISO
@@ -123,9 +124,9 @@ Disco template/plantilla de [Sistema Operativo](#Sistema\Operativo)
 
 #### SID
 
-* En sistemas operativos Microsoft Windows NT, un __Identificador de seguridad (o del inglés Security IDentifier)__ es un identificador único e inmutable de un usuario, grupo de usuarios u otro director de seguridad
-* El ejecutable C:\\windows\\system32\\sysprep\\sysprep.exe borra archivos de configuración para poder exportar la máquina y usarla como [template](#Disco\virtual\Template\o\Plantilla)
-*  ![sysprep](./images/sysprep.png)
+* En sistemas operativos Microsoft Windows NT, un __Identificador de seguridad (o del inglés Security IDentifier)__ es un identificador único e inmutable de un usuario, [grupo](#grupos) de usuarios u otro director de seguridad
+* El ejecutable `C:\windows\system32\sysprep\sysprep.exe` borra archivos de configuración para poder exportar la máquina y usarla como [template](#Disco-virtual-Template-o-Plantilla)
+	*  ![sysprep](./images/sysprep.png)
 
 #### Snapshot
 
@@ -137,49 +138,55 @@ Disco template/plantilla de [Sistema Operativo](#Sistema\Operativo)
 * Los Snapshot __NO SON UN BACKUP__
 * A partir de la versión de configuración 9 vienen activados los snapshots automáticos
 
-#### Creación de máquinas virtuales
+#### Creación-de-máquinas-virtuales
 
 * Luego de habilitar la característica de Hyper-V en Windows abrir Hyper-V manager:
-* ![hyper-v](./images/hyper-v-manager.png)
+	* ![hyper-v](./images/hyper-v-manager.png)
 * Click derecho sobre host (mi PC arriba a la izquierda) -> Nuevo -> Máquina virtual
 * Poner nombre a nuestra máquina virtual
 * Clickear checkbox para almacenar la máquina virtual en otra ubicación (se recomienda no dejarlo en el disco local C:\\ )
 * Seleccionar la [Generación](#Generación)
-* Se le asigna un espacio de [memoria](#Memoria\Virtual) (RAM)
-* Se le asigna un [adaptador](#Conmutadores\de\red\virtualizados) de red
-* Se le asigna un [disco](#Discos\Virtuales) duro virtual
-* Finalizar (Posteriormente se le debe agregar un [sistema operativo](#Sistema\Operativo) para que arranque)
+* Se le asigna un espacio de [memoria](#Memoria-Virtual) (RAM)
+* Se le asigna un [adaptador](#Conmutadores-de-red-virtualizados) de red
+* Se le asigna un [disco](#Discos-Virtuales) duro virtual
+* Finalizar (Posteriormente se le debe agregar un [sistema operativo](#Sistema-Operativo) para que arranque)
 
-#### Inicio automático
+#### Inicio-automático
 
 * Determina si la máquina virtual se inicia automáticamente cuando se encienda el Host
 * Se puede retrasar el inicio (útil en ambientes de #producción por ejemplo para controladores de dominio)
 
-#### Detención automática
+#### Detención-automática
 
 * Determina el comportamiento de la máquina virtual cuando se apaga el Host
 * Por defecto guarda el estado en el que está (con sus programas abiertos)
 * Pensado para ambientes de #desarrollo 
 * En #producción se utiliza la opción de Apagar el sistema operativo invitado
 
-#### Actualizar Windows Server
+#### Actualizar-Windows-Server
 
 * Hacer un backup del disco original
 * Descargar la ISO, una versión más nueva de la actual, se debe instalar una versión más nueva a la vez
 * Montar la ISO como DVD en la VM
 * Marcar la opción upgrade
 
-#### Herramienta Veeam backup and restore
+#### Herramienta-Veeam-backup-and-restore
 
 * Veeam Software es una empresa privada del sector de la tecnología de la información que desarrolla software de gestión de backup, recuperación ante desastres y gestión inteligente de datos para infraestructuras virtuales, físicas y multi-cloud
 
-### Active directory
+#### NetBios
+
+* Gracias al protocolo NetBios (protocolo que trabaja en capa 2 no routeable por MAC Address) dos máquinas que esten en un mismo switch pueden "verse" o descubrirse (resolver nombres) sin necesidad de un servidor DNS
+* Los Switch tienen una tabla CAM que guardan cara puerto con con una dirección MAC, cuando el equipo quiere descubrir la Red envía un maquete ICMP en modo Broadcast (a todas la máquinas, todos los puertos) y después cuando contesta la máquina que corresponde la siguiente conexión es Unicast (de máquina a máquina)
+* El dominio tiene su propio nombre Netbios
+
+### Active-directory
 
 [Active Directory](https://learn.microsoft.com/es-es/windows/win32/ad/active-directory-domain-services) (AD) o Directorio Activo (DA) son los términos que utiliza Microsoft para referirse a su implementación de servicio de directorio en una red distribuida de computadoras. Utiliza distintos protocolos, principalmente LDAP, DNS,​ DHCP y Kerberos.
 
-De forma sencilla se puede decir que es un servicio establecido en uno o varios servidores en donde se crean objetos tales como usuarios, equipos o grupos, con el objetivo de administrar los inicios de sesión en los equipos conectados a la red, así como también la administración de políticas en toda la red.
+De forma sencilla se puede decir que es un servicio establecido en uno o varios servidores en donde se crean objetos tales como usuarios, equipos o [grupos](#grupos), con el objetivo de administrar los inicios de sesión en los equipos conectados a la red, así como también la administración de políticas en toda la red.
 
-#### Nivel funcional
+#### Nivel-funcional
 
 * Según el sistema operativo que posea el controlador de dominio
 * Siempre elegir el más reciente
@@ -187,11 +194,12 @@ De forma sencilla se puede decir que es un servicio establecido en uno o varios 
 
 #### Bosque
 
-Conjunto de todos los dominios (root y child domains)
+Conjunto de todos los dominios (root y child [domains](#domain))
+* Cuando instala [Active Directory](#Active-Directory) en un nuevo bosque, se crea un nuevo enlace de sitio llamado DEFAULTIPSITELINK
 
 ![domain](./images/domaintree.png)
 
-#### Child Domain
+#### Child-Domain
 
 * Agregar un nuevo dominio a un bosque existente
 * Hereda el sufijo del padre por ejemplo ```adm.nombrempresa.local```
@@ -203,23 +211,33 @@ Conjunto de todos los dominios (root y child domains)
 #### Domain
 
 * Le suelen dar el mismo nombre que la organización
-* Debe contener por lo menos dos etiquetas (```.com.ar``` ```.local``` ```.internal```)
-* Antes Microsoft recomendaba dominios ```.local .internal```, ahora recomienda enroutables ```.com .com.ar```
-* Permite establecer políticas de grupo (controla los USB, no se puede abrir el panel de control, establecer un fondo de escritorio para todos)
+* Debe contener por lo menos dos etiquetas (`.com.ar` `.local` `.internal`)
+* Antes Microsoft recomendaba dominios `.local .internal`, ahora recomienda enroutables `.com .com.ar`
+* Permite establecer políticas de [grupo](#grupos) (controla los USB, no se puede abrir el panel de control, establecer un fondo de escritorio para todos)
 * Posee una consola centralizada (por ejemplo para crear usuarios que puedan iniciar sesión en cualquier equipo del dominio)
-* Server Manager -> Usuarios y equipos de Active Directory -> Consola centralizada
+* Server Manager -> Usuarios y equipos de [Active Directory](#active-directory) -> Consola centralizada
 * Instalar el rol de Active Directory Domain Services (ADDS) y configurarlo (promoverlo a controlador de dominio)
-* En versiones anteriores a la __Windows Server 2008R2__ tenías que ejecutar el comando ```dcpromo``` , a partir de la versión 2012 ese comando se __descontinuo__ y ahora se hace desde __Server Manager__ posterior a instalar el Rol
-* El asistente pide que creemos un Bosque con un dominio __principal o root__ (```nombreempresa.local```)
-* Es necesario que se mantenga vivo con máquinas llamadas contra dominios (Microsoft recomienda mínimo 2 por dominio, en este caso a como de ejemplo serían ```dc01.nombreempresa.local``` y ```dc02.nombreempresa.local```)
+* En versiones anteriores a la __Windows Server 2008R2__ tenías que ejecutar el comando `dcpromo` , a partir de la versión 2012 ese comando se __descontinuo__ y ahora se hace desde __Server Manager__ posterior a instalar el Rol
+* El asistente pide que creemos un Bosque con un dominio __principal o root__ (`nombreempresa.local`)
+* Es necesario que se mantenga vivo con máquinas llamadas contra dominios (Microsoft recomienda mínimo 2 por dominio, en este caso a como de ejemplo serían `dc01.nombreempresa.local` y `dc02.nombreempresa.local`)
+* Para agregar una máquina al dominio: 
+	* Se debe colocar los DNS para que pueda resolver el nombre del dominio (en propiedades del equipo -> change settings -> computer name change -> domains), va a poder encontrar el nombre del equipo (otro contra dominio) si están en la misma red gracias a [Netbios](#netbios) pero no el dominio
+	* En [directivas de grupo](#grupos), en default domain policy, hay una directiva de grupo que permite agregar un equipo al dominio hasta 10
 
-#### Unidad Organizativa
+#### Unidad-Organizativa-(OU)
 
 * Carpetas customizadas para organizar objetos individuales para cada caso (por ejemplo para darle acceso a un equipo de Helpdesk de agregar usuarios locales a las máquinas en el dominio)
+* Por defecto no se pueden borrar objetos ya que en las propiedades/características avanzadas (una vez habilitadas), hay un checkbox que protege contra eliminación accidental
+* A partir de Windows Server 2002 para habilitar la papelera de reciclaje (en [Active Directory](#active-directory)) es necesario entrar a Server Manager -> Tools -> Active Directory Administrative Console (nace en Windows Server 2008R2). Al habilitarlo se crea una carpeta llamada Delete Object dentro de la consola
 
 #### Contenedor
 
-* Al igual que las unidades organizativas son carpetas para organizar objetos pero que vienen por defecto
+* Al igual que las unidades organizativas son carpetas para organizar objetos pero que vienen por defecto (limitada en la cantidad de objetos modificables, se puede mover objetos a las OU)
+
+#### Grupos
+
+* Los grupos son para los contra dominios, por ejemplo un usuario en el dominio puede tener acceso remoto al contra dominio pero no a las computadoras asociadas al dominio, ya que si no pertenece al grupo Domain Admin no es administrador local de ninguno
+* Agregar usuarios a distintos grupo les permite tener permisos sobre objetos de AD
 * __Domain Admin__:
 	* Cuando los equipos y servidores se unen al dominio, se le agrega al grupo de administradores locales el grupo __domain admin__
 	*  Un __domain admin__ no puede ver los objetos de `brasil.tuempresa.com` si está en `peru.tuempresa.com` pero si puede administrar los equipos en su dominio
@@ -229,18 +247,25 @@ Conjunto de todos los dominios (root y child domains)
 	* No se agrega como administrador local en los equipos del dominio
 	* Está pensado para administrar contra dominios dentro del bosque
 	* Vive en el __root domain__ y puede ver objetos de contra dominios de los __child domain__
+* __Administrators:__
+	* Los miembros del grupo son Domain Admin y Enterprise Admin (en este último da privilegio local sobre el controlador de dominio porque se replica, pero no en equipos del dominio)
+	* No es recomendable que se use el usuario Administrator por defecto creado localmente sino que se cree un usuario específico para administrar el dominio
+
+#### Group-Policy
+
+* 
 
 #### RSAT
 
 Herramientas de administración remota del servidor
 * En una PC unida al dominio con los permisos correspondientes en ActiveDirectory -> Configuración -> Aplicaciones -> Características Opcionales -> RSAT (sirve para hacer acciones administrativas en nuestro servidor sin conectarse por RDP)
 
-#### Global Catalog
+#### Global-Catalog
 
 * El catálogo global contiene una réplica parcial de cada contexto de nomenclatura del directorio
 * Es recomendable que todos los contra dominios tengan la función del global catalog
 
-#### Contra dominio de sólo lectura
+#### Contra-dominio-de-sólo-lectura
 
 * Disponible a partir de la versión Windows Server 2008R2
 * El primer contra dominio debe ser de escritura y lectura (DC01)
@@ -249,10 +274,16 @@ Herramientas de administración remota del servidor
 * Por ejemplo se pueden crear usuarios nuevos y crearles una contraseña pero éste contacta al servidor de lectura-escritura, lo crea ahí y después lo replica
 * Depende de una conexión activa ya que no almacena credenciales a menos que se ajuste para que lo haga
 
-#### Contra dominio DNS server
+#### Contra-dominio-DNS-server
 
 * Se integra en la base de datos de AD (se replica en el resto de los contra dominios)
 * Aloja los registros DNS de la organización
 * Si la ruta no está cacheada en el archivo host local, le consulta al DNS la IP
 * En las propiedades de las placas de red de una máquina que quieras unir al dominio, hay que poner la IP de los contra dominios DNS
 * De manera predeterminada cuando no hay una IP en la zona que tiene cargada, pasa la petición a internet, a los __root hints__ (por ejemplo cuando quiere resolver `mercadolibre.com.ar`)
+* Si tiene una zona DNS previamente conocida en un servidor, sale una advertencia que pregunta si querés sumar esa zona al dominio de [Active Directory](#active-directory)
+
+#### Restore-Mode
+
+* Se establece una contraseña única por cada contra dominio que la pide cuando se entra al modo de restauración
+* Cuando se promueve una máquina a contra dominio, se replican las credenciales de los usuarios locales de DC01. Por lo tanto la contraseña de administradores de dominio no son iguales a la contraseña de restore mode
